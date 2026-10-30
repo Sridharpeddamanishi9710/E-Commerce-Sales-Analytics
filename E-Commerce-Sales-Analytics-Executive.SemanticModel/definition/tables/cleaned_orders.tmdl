@@ -1,0 +1,90 @@
+table cleaned_orders
+	lineageTag: 31eb901f-ba98-4cfe-9dc5-5d6006432cfb
+
+	column OrderID
+		dataType: string
+		lineageTag: 9526843e-da6c-4aad-9d83-eb8f2264103b
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		lineageTag: 5153556d-86f0-498d-ad35-773829937a0e
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9cd3f3b5-4d05-4b53-b64b-b34a8cc8c03c
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		variation Variation
+			isDefault
+			relationship: 35d87a5d-e5ce-4457-bbf4-babf5c3a885f
+			defaultHierarchy: LocalDateTable_1afd1787-8e63-44bc-8af7-76f5f36a631b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ShipDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fad5ca00-c541-4e2f-89e7-f365fe219418
+		summarizeBy: none
+		sourceColumn: ShipDate
+
+		variation Variation
+			isDefault
+			relationship: 125dce37-1018-4c61-a872-30969df7d102
+			defaultHierarchy: LocalDateTable_f942c535-3f15-40a5-a7de-fc9a56eb64d2.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column OrderStatus
+		dataType: string
+		lineageTag: 9b53446d-34d7-4d1b-ad9f-70e6ff9a12e5
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column PaymentMethod
+		dataType: string
+		lineageTag: c4914e7b-730a-439d-bad2-949032e558c9
+		summarizeBy: none
+		sourceColumn: PaymentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryDays
+		dataType: int64
+		formatString: 0
+		lineageTag: 2605baf6-dee5-43da-9c58-b19528c74b6e
+		summarizeBy: sum
+		sourceColumn: DeliveryDays
+
+		annotation SummarizationSetBy = Automatic
+
+	partition cleaned_orders = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\pedda\OneDrive\Documents\E-Commerce-Sales-Analytics\data\cleaned_orders.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"OrderID", type text}, {"CustomerID", type text}, {"OrderDate", type date}, {"ShipDate", type date}, {"OrderStatus", type text}, {"PaymentMethod", type text}, {"DeliveryDays", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

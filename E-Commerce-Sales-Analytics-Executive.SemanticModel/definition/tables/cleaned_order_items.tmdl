@@ -1,0 +1,80 @@
+table cleaned_order_items
+	lineageTag: 30d3f330-64a7-4acb-bc51-abe1d87933b2
+
+	column OrderItemID
+		dataType: string
+		lineageTag: 8036763c-1930-4a19-aeef-681ced21bc52
+		summarizeBy: none
+		sourceColumn: OrderItemID
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderID
+		dataType: string
+		lineageTag: 960c4b6b-9498-4c60-8199-b82fe1a12c46
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		lineageTag: 1c11d904-6b0d-42f8-ae20-fe0edbbff8cd
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: a963d67d-a074-4531-a3c8-75cdec3faee4
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Discount
+		dataType: double
+		lineageTag: 09cc7c2c-b29f-41e1-b00e-2ace8719fba7
+		summarizeBy: sum
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LineTotal
+		dataType: double
+		lineageTag: 25d55608-1271-4c45-abd1-c99217ce5a71
+		summarizeBy: sum
+		sourceColumn: LineTotal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LineProfit
+		dataType: double
+		lineageTag: ea7e03b0-fd80-4aea-a49e-54b878ca75be
+		summarizeBy: sum
+		sourceColumn: LineProfit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition cleaned_order_items = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\pedda\OneDrive\Documents\E-Commerce-Sales-Analytics\data\cleaned_order_items.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"OrderItemID", type text}, {"OrderID", type text}, {"ProductID", type text}, {"Quantity", Int64.Type}, {"Discount", type number}, {"LineTotal", type number}, {"LineProfit", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

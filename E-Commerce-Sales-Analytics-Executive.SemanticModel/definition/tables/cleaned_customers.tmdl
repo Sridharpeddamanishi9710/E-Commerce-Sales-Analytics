@@ -1,0 +1,106 @@
+table cleaned_customers
+	lineageTag: ef72e45c-c115-4533-9684-a53d76240b5d
+
+	measure 'Total Profit' = SUM(cleaned_order_items[LineProfit])
+		formatString: ₹#,##0.00
+		lineageTag: aa7feafc-e36d-43ae-a895-6f237816675b
+
+	measure 'Total Revenue' = SUM(cleaned_order_items[LineTotal])
+		formatString: ₹#,##0.00
+		lineageTag: 132b4cad-6132-4bf4-a66d-1507c6f2e247
+
+	measure 'Total Orders' = DISTINCTCOUNT(cleaned_orders[OrderID])
+		formatString: #,##0
+		lineageTag: c0a25740-c468-4f8f-b605-1764c0b8f735
+
+	measure 'Average Order Value' = DIVIDE([Total Revenue], [Total Orders], 0)
+		formatString: ₹#,##0.00
+		lineageTag: 47a99158-9181-4304-8ccc-f91d3e1c77db
+
+	column CustomerID
+		dataType: string
+		lineageTag: fdb089f8-01ab-45de-b9a6-3bbccde34ae7
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerName
+		dataType: string
+		lineageTag: ab1ef905-eb64-4f6a-a8fb-aa0771f7d1b0
+		summarizeBy: none
+		sourceColumn: CustomerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		lineageTag: ad7adc7c-1183-4d61-ac36-93f5262f589c
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column JoinDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4caf17f7-8967-4eae-9bf3-165529fe7d7d
+		summarizeBy: none
+		sourceColumn: JoinDate
+
+		variation Variation
+			isDefault
+			relationship: efe3fbeb-98a3-4dbf-9f5c-a6a33c4751ad
+			defaultHierarchy: LocalDateTable_9d303967-de62-455f-862c-b6828f10733d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column RegionID
+		dataType: string
+		lineageTag: 99a459cb-8eb5-4acb-9047-86faf0688e78
+		summarizeBy: none
+		sourceColumn: RegionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: 281ed2d5-04fc-490e-a668-275bd50d8da8
+		summarizeBy: sum
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: b2971986-aaeb-4b9d-9109-4368243250d8
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgeGroup
+		dataType: string
+		lineageTag: f2ef0bdb-f951-4172-956e-ad8ff619d1fa
+		summarizeBy: none
+		sourceColumn: AgeGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	partition cleaned_customers = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\pedda\OneDrive\Documents\E-Commerce-Sales-Analytics\data\cleaned_customers.csv"),[Delimiter=",", Columns=8, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CustomerID", type text}, {"CustomerName", type text}, {"Email", type text}, {"JoinDate", type date}, {"RegionID", type text}, {"Age", Int64.Type}, {"Gender", type text}, {"AgeGroup", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

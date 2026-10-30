@@ -1,0 +1,31 @@
+relationship efe3fbeb-98a3-4dbf-9f5c-a6a33c4751ad
+	joinOnDateBehavior: datePartOnly
+	fromColumn: cleaned_customers.JoinDate
+	toColumn: LocalDateTable_9d303967-de62-455f-862c-b6828f10733d.Date
+
+relationship 35d87a5d-e5ce-4457-bbf4-babf5c3a885f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: cleaned_orders.OrderDate
+	toColumn: LocalDateTable_1afd1787-8e63-44bc-8af7-76f5f36a631b.Date
+
+relationship 125dce37-1018-4c61-a872-30969df7d102
+	joinOnDateBehavior: datePartOnly
+	fromColumn: cleaned_orders.ShipDate
+	toColumn: LocalDateTable_f942c535-3f15-40a5-a7de-fc9a56eb64d2.Date
+
+relationship d979a596-0c77-ba71-010a-4bef9c8e4e56
+	fromColumn: cleaned_orders.CustomerID
+	toColumn: cleaned_customers.CustomerID
+
+relationship 14277168-1e2a-b5ff-b9ad-e6a91dee4ae1
+	fromColumn: cleaned_order_items.OrderID
+	toColumn: cleaned_orders.OrderID
+
+relationship 67c88e61-c30d-66f2-4ef5-cfd7d69e55d2
+	fromColumn: cleaned_order_items.ProductID
+	toColumn: cleaned_products.ProductID
+
+relationship AutoDetected_5c5db418-31da-4371-84fe-3934527c5f86
+	fromColumn: cleaned_customers.RegionID
+	toColumn: cleaned_regions.RegionID
+

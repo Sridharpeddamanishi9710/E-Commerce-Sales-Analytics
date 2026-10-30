@@ -1,0 +1,27 @@
+model Model
+	culture: en-IN
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["cleaned_orders","cleaned_customers","cleaned_order_items","cleaned_products","cleaned_regions"]
+
+annotation PBI_ProTooling = ["MCP-PBIModeling","DevMode"]
+
+ref table cleaned_customers
+ref table DateTableTemplate_08b17c96-7a36-45a9-90e0-af52b3dd957f
+ref table LocalDateTable_9d303967-de62-455f-862c-b6828f10733d
+ref table cleaned_orders
+ref table LocalDateTable_1afd1787-8e63-44bc-8af7-76f5f36a631b
+ref table LocalDateTable_f942c535-3f15-40a5-a7de-fc9a56eb64d2
+ref table cleaned_order_items
+ref table cleaned_products
+ref table cleaned_regions
+
+ref cultureInfo en-IN
+

@@ -1,0 +1,42 @@
+table cleaned_regions
+	lineageTag: 2af78871-919d-45d1-8920-f37734b853ef
+
+	column RegionID
+		dataType: string
+		lineageTag: 5a6b2e03-2459-49fe-8cf7-ea9009cd464d
+		summarizeBy: none
+		sourceColumn: RegionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionName
+		dataType: string
+		lineageTag: c150e295-c99a-444a-b6e9-5a9133c8b7df
+		summarizeBy: none
+		sourceColumn: RegionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 6d86d03d-3510-46a0-8120-10871cbf0b05
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	partition cleaned_regions = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\pedda\OneDrive\Documents\E-Commerce-Sales-Analytics\data\cleaned_regions.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"RegionID", type text}, {"RegionName", type text}, {"Country", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

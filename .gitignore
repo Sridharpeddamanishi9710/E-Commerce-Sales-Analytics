@@ -1,0 +1,23 @@
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Database and private data
+*.db
+data/
+*.csv
+
+# Power BI binary files
+*.pbix
+
+# Backup files
+*.backup/
+*.bak
+
+# Environment variables
+.env
+
+# System files
+.DS_Store
+Thumbs.db
